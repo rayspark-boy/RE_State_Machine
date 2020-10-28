@@ -1,0 +1,22 @@
+@startuml
+[*] --> Idle 
+Idle --> Room_Selected  : Select available room
+Room_Selected --> Inprogress_Status  : Submit room reservation button
+Inprogress_Status --> Reservation_form_filled : Fill reservation form
+Reservation_form_filled --> Identification_Doc_Attached : Attach identification document
+Identification_Doc_Attached  --> Transfer_Slip_Attached : Attach transfer slip document
+Transfer_Slip_Attached  --> In_Validating_Status : Submit
+state c <<choice>>
+state d <<choice>>
+In_Validating_Status --> c
+c --> Request_Revising_Form : Incomplete
+Request_Revising_Form --> Reservation_form_filled : Revise reservation form
+c --> d : Complete
+d --> Reserved : Approve
+d --> Rejected : Reject
+state join_state <<join>>
+Reserved --> join_state
+Rejected --> join_state
+join_state --> Message_Notified : Notify message and reason
+Message_Notified --> [*]
+@enduml
